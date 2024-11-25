@@ -70,11 +70,17 @@ func handleOperation(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"message": "Use: {'a':<int>,'b':<int>, 'op':<str>}"}`))
+	})
+
 	mux.HandleFunc("POST /operation", http.HandlerFunc(handleOperation))
 	mux.HandleFunc("GET /operation", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"message": "Use: {'a':<int>,'b':<int>, 'op':<str>"}`))
+		w.Write([]byte(`{"message": "Use: {'a':<int>,'b':<int>, 'op':<str>"}}`))
 	})
 
 	server := http.Server{
